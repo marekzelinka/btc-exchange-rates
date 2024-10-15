@@ -81,7 +81,7 @@ appCache.on('expired', async (key) => {
   }
 });
 
-app.get('/', async (req, res, next) => {
+app.get('/', async (_req, res) => {
   try {
     let result: ExchangeRateResult | undefined = appCache.get('exchangeRates');
 
@@ -102,7 +102,7 @@ app.get('/', async (req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, async () => {
+app.listen(port, async () => {
   console.log(`server started on port: ${port}`);
 
   try {
