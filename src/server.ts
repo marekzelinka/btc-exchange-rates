@@ -1,10 +1,10 @@
-import express from "express";
-import path from "node:path";
-import axios from "axios";
-import morgan from "morgan";
-import NodeCache from "node-cache";
-import { format } from "date-fns";
-import * as url from "node:url";
+import express from 'express';
+import path from 'node:path';
+import axios from 'axios';
+import morgan from 'morgan';
+import NodeCache from 'node-cache';
+import { format } from 'date-fns';
+import * as url from 'node:url';
 
 type Currency = {
   name: string;
@@ -24,13 +24,13 @@ type ExchangeRateResult = {
   data: Rates;
 };
 
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const appCache = new NodeCache();
 
 const app = express();
 
 const morganMiddleware = morgan(
-  ":method :url :status :res[content-length] - :response-time ms",
+  ':method :url :status :res[content-length] - :response-time ms',
   {
     stream: {
       write: (message) => console.log(message.trim()),
@@ -40,17 +40,17 @@ const morganMiddleware = morgan(
 
 app.use(morganMiddleware);
 
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.set("view engine", "pug");
-app.set("views", path.join(__dirname, "..", "views"));
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '..', 'views'));
 
 async function getExchangeRates(): Promise<Rates> {
   const response = await axios.get(
-    "https://api.coingecko.com/api/v3/exchange_rates",
+    'https://api.coingecko.com/api/v3/exchange_rates',
     {
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     }
   );
@@ -65,15 +65,15 @@ async function refreshExchangeRates(): Promise<ExchangeRateResult> {
     data: rates,
   };
 
-  appCache.set("exchangeRates", result, 600);
+  appCache.set('exchangeRates', result, 600);
 
-  console.log("Exchange rates cache updated");
+  console.log('Exchange rates cache updated');
   return result;
 }
 
-appCache.on("expired", async (key) => {
+appCache.on('expired', async (key) => {
   try {
-    if (key === "exchangeRates") {
+    if (key === 'exchangeRates') {
       await refreshExchangeRates();
     }
   } catch (err) {
@@ -81,23 +81,23 @@ appCache.on("expired", async (key) => {
   }
 });
 
-app.get("/", async (req, res, next) => {
+app.get('/', async (req, res, next) => {
   try {
-    let result: ExchangeRateResult | undefined = appCache.get("exchangeRates");
+    let result: ExchangeRateResult | undefined = appCache.get('exchangeRates');
 
     if (result == null) {
       result = await refreshExchangeRates();
     }
 
-    res.render("home", {
-      title: "Bitcoin Exchange Rates",
-      lastUpdated: format(result.timestamp, "LLL dd, yyyy hh:mm:ss a O"),
+    res.render('home', {
+      title: 'Bitcoin Exchange Rates',
+      lastUpdated: format(result.timestamp, 'LLL dd, yyyy hh:mm:ss a O'),
       data: result.data,
     });
   } catch (err) {
     console.error(err);
-    res.set("Content-Type", "text/html");
-    res.status(500).send("<h1>Internal Server Error</h1>");
+    res.set('Content-Type', 'text/html');
+    res.status(500).send('<h1>Internal Server Error</h1>');
   }
 });
 
@@ -108,6 +108,6 @@ const server = app.listen(port, async () => {
   try {
     await refreshExchangeRates();
   } catch (err) {
-    console.error("Unable to refresh exchange rate due to error: ", err);
+    console.error('Unable to refresh exchange rate due to error: ', err);
   }
 });
