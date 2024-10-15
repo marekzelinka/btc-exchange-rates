@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && node dist/example.js",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "lint": "eslint . --fix",
     "format": "prettier . -w"
   },
