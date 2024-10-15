@@ -8,7 +8,8 @@
   "author": "Better Stack Team",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && node dist/example.js"
+    "build": "tsc && node dist/example.js",
+    "lint": "eslint . --fix"
   },
   "prettier": {},
   "license": "Apache License, Version 2.0",
@@ -25,6 +26,9 @@
     "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.7.5",
+    "@typescript-eslint/eslint-plugin": "^8.9.0",
+    "@typescript-eslint/parser": "^8.9.0",
+    "eslint": "^9.12.0",
     "nodemon": "^3.0.1",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3"
