@@ -7,7 +7,8 @@
   "keywords": [],
   "author": "Better Stack Team",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "build": "tsc && node dist/example.js"
   },
   "prettier": {},
   "license": "Apache License, Version 2.0",
@@ -20,6 +21,9 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^22.7.5",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.6.3"
   }
 }
