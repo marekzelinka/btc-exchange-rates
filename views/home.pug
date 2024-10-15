@@ -1,7 +1,7 @@
 extends default
 
 block content
-  section.hero.is-link.mb-5
+  section.hero.is-warning.mb-5
     .hero-body
       p.title
         | Bitcoin Exchange Rates
@@ -13,7 +13,7 @@ block content
         table.table.is-bordered.is-striped.is-hoverable.is-fullwidth
           thead
             tr
-              th Position
+              th(aria-label="Position") # 
               th Currency
               th Symbol
               th Price
