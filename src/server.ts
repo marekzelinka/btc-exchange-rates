@@ -6,6 +6,24 @@ import NodeCache from "node-cache";
 import { format } from "date-fns";
 import * as url from "node:url";
 
+type Currency = {
+  name: string;
+  unit: string;
+  value: number;
+  type: string;
+};
+
+type Rates = {
+  rates: {
+    [key: string]: Currency;
+  };
+};
+
+type ExchangeRateResult = {
+  timestamp: Date;
+  data: Rates;
+};
+
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const appCache = new NodeCache();
 
@@ -27,7 +45,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "..", "views"));
 
-async function getExchangeRates() {
+async function getExchangeRates(): Promise<Rates> {
   const response = await axios.get(
     "https://api.coingecko.com/api/v3/exchange_rates",
     {
@@ -40,7 +58,7 @@ async function getExchangeRates() {
   return response.data;
 }
 
-async function refreshExchangeRates() {
+async function refreshExchangeRates(): Promise<ExchangeRateResult> {
   const rates = await getExchangeRates();
   const result = {
     timestamp: new Date(),
@@ -65,7 +83,7 @@ appCache.on("expired", async (key) => {
 
 app.get("/", async (req, res, next) => {
   try {
-    let result = appCache.get("exchangeRates");
+    let result: ExchangeRateResult | undefined = appCache.get("exchangeRates");
 
     if (result == null) {
       result = await refreshExchangeRates();
