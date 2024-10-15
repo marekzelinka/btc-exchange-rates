@@ -7,7 +7,7 @@
   "keywords": [],
   "author": "Better Stack Team",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc && node dist/example.js"
   },
   "prettier": {},
@@ -26,6 +26,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.7.5",
     "nodemon": "^3.0.1",
+    "tsx": "^4.19.1",
     "typescript": "^5.6.3"
   }
 }
